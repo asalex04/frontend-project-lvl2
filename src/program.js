@@ -1,7 +1,8 @@
 import commander from 'commander';
-import genDiff from '.';
+//import genDiff from '.';
 
 export default program = () => {
+  console.log('test');
   commander
     .version('1.0.0')
     .description('Compares two configuration files and shows a difference.')
