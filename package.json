@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "![Actions Status](/workflows/hexlet-check/badge.svg)",
   "main": "index.js",
+  "type": "module",
   "bin": {
     "gendiff": "src/bin/gendiff.js"
   },
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
