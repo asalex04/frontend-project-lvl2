@@ -1,4 +1,4 @@
 ### Hexlet tests and linter status:
-[![Node CI](https://github.com/asalex04/frontend-project-lvl2/workflows/Node%20CI/badge.svg)]
+![Node CI](https://github.com/asalex04/frontend-project-lvl2/workflows/Node%20CI/badge.svg)
 [![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/codeclimate/codeclimate/maintainability)
 
