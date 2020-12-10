@@ -1,12 +1,16 @@
 import fs from 'fs';
 import path from 'path';
 import _ from 'lodash';
+import parse from './parsers.js';
 
 const dataFile = (filepath) => {
   const pathToFile = path.resolve(process.cwd(), filepath);
   const data = fs.readFileSync(pathToFile, 'utf-8');
   const type = path.extname(filepath).slice(1);
-  return JSON.parse(data, type);
+  // console.log(data);
+  // console.log(type);
+  // console.log(parse(data, type));
+  return parse(data, type);
 };
 
 const bildAST = (dataBefore, dataAfter) => {
