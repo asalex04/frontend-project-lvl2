@@ -1,6 +1,7 @@
 import _ from 'lodash';
 
 const tab = (n) => ' '.repeat(n);
+const gap = '  ';
 
 const modify = (element, depth) => {
   if (!_.isObject(element)) return element;
@@ -15,19 +16,18 @@ const format = (obj) => {
       const {
         name, oldValue, newValue, status, currentValue,
       } = node;
-      // console.log(node);
       const lines = {
-        added: () => `${tab(depth)}+ ${name}: ${modify(newValue, depth)}`,
-        deleted: () => `${tab(depth)}- ${name}: ${modify(oldValue, depth)}`,
-        unchanged: () => `${tab(depth + 2)}${name}: ${modify(oldValue, depth)}`,
+        added: () => `${gap}${tab(depth)}+ ${name}: ${modify(newValue, depth)}`,
+        deleted: () => `${gap}${tab(depth)}- ${name}: ${modify(oldValue, depth)}`,
+        unchanged: () => `${gap}${tab(depth + 2)}${name}: ${modify(oldValue, depth)}`,
         edited: () => `${lines.added()}\n${lines.deleted()}`,
-        hasChildren: () => `${tab(depth + 2)}${name}: ${iter(currentValue, depth + 2)}`,
+        hasChildren: () => `${gap}${tab(depth + 2)}${name}: ${gap}${iter(currentValue, depth + 2)}`,
       };
       return lines[status]();
     });
     return ['{', ...res, `${tab(depth)}}`].join('\n');
   };
-  return iter(obj, 2);
+  return iter(obj, 0);
 };
 
 export default format;
