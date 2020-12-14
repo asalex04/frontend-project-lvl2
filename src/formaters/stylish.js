@@ -21,7 +21,7 @@ const format = (obj) => {
         deleted: () => `${gap}${tab(depth)}- ${name}: ${modify(oldValue, depth)}`,
         unchanged: () => `${gap}${tab(depth + 2)}${name}: ${modify(oldValue, depth)}`,
         edited: () => `${lines.added()}\n${lines.deleted()}`,
-        hasChildren: () => `${gap}${tab(depth + 2)}${name}: ${gap}${iter(currentValue, depth + 2)}`,
+        hasChildren: () => `${gap}${tab(depth + 2)}${name}: ${iter(currentValue, depth + 2)}`,
       };
       return lines[status]();
     });
