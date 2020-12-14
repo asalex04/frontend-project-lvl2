@@ -11,7 +11,7 @@ const getFilePath = (filename) => path
   .join(dirName, '..', '__tests__', '__fixtures__', filename);
 const readFile = (filename) => fs.readFileSync(getFilePath(filename), 'utf-8');
 
-const getExpectResult = readFile('fileResult.txt');
+const getExpectResult = readFile('resultStylish.txt');
 
 test('gendiff', () => {
   const pathBefore = getFilePath('before.yml');
