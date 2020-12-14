@@ -14,7 +14,7 @@ const readFile = (filename) => fs.readFileSync(getFilePath(filename), 'utf-8');
 const getExpectResult = readFile('resultStylish.txt');
 
 test('gendiff', () => {
-  const pathBefore = getFilePath('before.yml');
-  const pathAfter = getFilePath('after.yml');
+  const pathBefore = getFilePath('before.json');
+  const pathAfter = getFilePath('after.json');
   expect(genDiff(pathBefore, pathAfter)).toEqual(getExpectResult);
 });
