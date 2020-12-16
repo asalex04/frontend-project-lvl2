@@ -10,7 +10,7 @@ const modify = (element, depth) => {
   return ['{', ...res, `${tab(depth + 2)}}`].join('\n');
 };
 
-const format = (obj) => {
+const diff = (obj) => {
   const iter = (data, depth) => {
     const res = data.map((node) => {
       const {
@@ -18,9 +18,9 @@ const format = (obj) => {
       } = node;
       const lines = {
         added: () => `${gap}${tab(depth)}+ ${name}: ${modify(newValue, depth)}`,
-        deleted: () => `${gap}${tab(depth)}- ${name}: ${modify(oldValue, depth)}`,
+        removed: () => `${gap}${tab(depth)}- ${name}: ${modify(oldValue, depth)}`,
         unchanged: () => `${gap}${tab(depth + 2)}${name}: ${modify(oldValue, depth)}`,
-        edited: () => `${lines.added()}\n${lines.deleted()}`,
+        updated: () => `${lines.added()}\n${lines.removed()}`,
         hasChildren: () => `${gap}${tab(depth + 2)}${name}: ${iter(currentValue, depth + 2)}`,
       };
       return lines[status]();
@@ -30,4 +30,4 @@ const format = (obj) => {
   return iter(obj, 0);
 };
 
-export default format;
+export default diff;

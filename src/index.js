@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import _ from 'lodash';
 import parse from './parsers.js';
-import diff from './formaters/stylish.js';
+import diff from './formaters/index.js';
 
 const dataFile = (filepath) => {
   const pathToFile = path.resolve(process.cwd(), filepath);
@@ -27,19 +27,19 @@ const bildAST = (dataBefore, dataAfter) => {
         currentValue: bildAST(dataBefore[key], dataAfter[key]),
       };
     }
-    if (!_.has(dataAfter, key)) return { ...node, status: 'deleted' };
+    if (!_.has(dataAfter, key)) return { ...node, status: 'removed' };
     if (!_.has(dataBefore, key)) return { ...node, status: 'added' };
-    if (dataBefore[key] !== dataAfter[key]) return { ...node, status: 'edited' };
+    if (dataBefore[key] !== dataAfter[key]) return { ...node, status: 'updated' };
     return { ...node, status: 'unchanged' };
   });
   return AST;
 };
 
-const genDiff = (firstFile, secondFile) => {
+const genDiff = (firstFile, secondFile, format) => {
   const dataBefore = dataFile(firstFile);
   const dataAfter = dataFile(secondFile);
   const Tree = bildAST(dataBefore, dataAfter);
-  return diff(Tree);
+  return diff(Tree, format);
 };
 
 export default genDiff;
