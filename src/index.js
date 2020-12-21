@@ -8,10 +8,12 @@ const dataFile = (filepath) => {
   const pathToFile = path.resolve(process.cwd(), filepath);
   const data = fs.readFileSync(pathToFile, 'utf-8');
   const type = path.extname(filepath).slice(1);
+  // console.log(parse(data, type));
   return parse(data, type);
 };
 
 const bildAST = (dataBefore, dataAfter) => {
+  // console.log(dataBefore);
   const keys = _.union(Object.keys(dataBefore), Object.keys(dataAfter));
   const sortKeys = _.sortBy(keys);
   const AST = sortKeys.map((key) => {
@@ -36,7 +38,9 @@ const bildAST = (dataBefore, dataAfter) => {
 };
 
 const genDiff = (firstFile, secondFile, format) => {
+  // console.log(firstFile);
   const dataBefore = dataFile(firstFile);
+  // console.log(dataFile(firstFile));
   const dataAfter = dataFile(secondFile);
   const Tree = bildAST(dataBefore, dataAfter);
   return diff(Tree, format);
