@@ -6,7 +6,7 @@ const formatters = {
   plain: renderPlain,
   json: JSON.stringify,
 };
-const formater = (diff, format) => {
-  formatters[format](diff);
-};
+
+const formater = (diff, format) => formatters[format](diff);
+
 export default formater;

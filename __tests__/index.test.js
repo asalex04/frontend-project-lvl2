@@ -13,17 +13,13 @@ const getFilePath = (filename) => path
 
 const readFile = (filename) => fs.readFileSync(getFilePath(filename), 'utf-8');
 const getName = (resultFormat) => _.upperFirst(resultFormat);
-const cases = [['json', 'stylish']];
+const instances = [['json', 'stylish'], ['yml', 'plain'], ['yml', 'json']];
 
-test.each(cases)(
+test.each(instances)(
   'gendiff',
   (ext, resultFormat) => {
     const pathBefore = getFilePath(`before.${ext}`);
-    // console.log(pathBefore);
     const pathAfter = getFilePath(`after.${ext}`);
-    // console.log(pathAfter);
-    console.log(resultFormat);
-    // console.log(genDiff(pathBefore, pathAfter, resultFormat));
     const getExpectResult = readFile(`result${getName(resultFormat)}.txt`);
     expect(genDiff(pathBefore, pathAfter, `${resultFormat}`)).toEqual(getExpectResult);
   },
