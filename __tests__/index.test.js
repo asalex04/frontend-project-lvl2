@@ -1,4 +1,5 @@
 import fs from 'fs';
+import _ from 'lodash';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { test, expect } from '@jest/globals';
@@ -9,12 +10,17 @@ const dirName = dirname(fileName);
 
 const getFilePath = (filename) => path
   .join(dirName, '..', '__tests__', '__fixtures__', filename);
+
 const readFile = (filename) => fs.readFileSync(getFilePath(filename), 'utf-8');
+const getName = (resultFormat) => _.upperFirst(resultFormat);
+const instances = [['json', 'stylish'], ['yml', 'plain'], ['yml', 'json']];
 
-const getExpectResult = readFile('resultStylish.txt');
-
-test('gendiff', () => {
-  const pathBefore = getFilePath('before.yml');
-  const pathAfter = getFilePath('after.yml');
-  expect(genDiff(pathBefore, pathAfter)).toEqual(getExpectResult);
-});
+test.each(instances)(
+  'gendiff',
+  (ext, resultFormat) => {
+    const pathBefore = getFilePath(`before.${ext}`);
+    const pathAfter = getFilePath(`after.${ext}`);
+    const getExpectResult = readFile(`result${getName(resultFormat)}.txt`);
+    expect(genDiff(pathBefore, pathAfter, `${resultFormat}`)).toEqual(getExpectResult);
+  },
+);
