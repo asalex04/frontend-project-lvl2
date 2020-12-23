@@ -5,6 +5,6 @@ const parsers = {
   yml: yaml.safeLoad,
 };
 
-const parse = (data, type) => parsers[type](data);
+const parse = (data, fileExtension) => parsers[fileExtension](data);
 
 export default parse;

@@ -13,33 +13,50 @@ const getDataFile = (filepath) => {
 
 const bildTree = (dataBefore, dataAfter) => {
   const keys = _.union(Object.keys(dataBefore), Object.keys(dataAfter));
-  const sortedKeys = _.sortBy(keys);
-  const diffTree = sortedKeys.map((key) => {
-    const node = {
-      name: key,
-      oldValue: dataBefore[key],
-      newValue: dataAfter[key],
-    };
-    if (_.isObject(dataBefore[key]) && _.isObject(dataAfter[key])) {
+  const diffTree = _.sortBy(keys).map((key) => {
+    if (!_.has(dataAfter, key)) {
+      return {
+        name: key,
+        status: 'removed',
+        oldValue: dataBefore[key],
+      };
+    }
+    if (!_.has(dataBefore, key)) {
+      return {
+        name: key,
+        status: 'added',
+        newValue: dataAfter[key],
+      };
+    }
+    if (_.isPlainObject(dataBefore[key]) && _.isPlainObject(dataAfter[key])) {
       return {
         name: key,
         status: 'hasChildren',
-        currentValue: bildTree(dataBefore[key], dataAfter[key]),
+        currentChildren: bildTree(dataBefore[key], dataAfter[key]),
       };
     }
-    if (!_.has(dataAfter, key)) return { ...node, status: 'removed' };
-    if (!_.has(dataBefore, key)) return { ...node, status: 'added' };
-    if (dataBefore[key] !== dataAfter[key]) return { ...node, status: 'updated' };
-    return { ...node, status: 'unchanged' };
+    if (dataBefore[key] !== dataAfter[key]) {
+      return {
+        name: key,
+        status: 'changed',
+        newValue: dataAfter[key],
+        oldValue: dataBefore[key],
+      };
+    }
+    return {
+      name: key,
+      status: 'unchanged',
+      oldValue: dataBefore[key],
+    };
   });
   return diffTree;
 };
 
-const genDiff = (firstFile, secondFile, format = 'stylish') => {
-  const dataBefore = getDataFile(firstFile);
-  const dataAfter = getDataFile(secondFile);
-  const Tree = bildTree(dataBefore, dataAfter);
-  return diff(Tree, format);
+const genDiff = (filePathBefore, filePathAfter, format = 'stylish') => {
+  const dataBefore = getDataFile(filePathBefore);
+  const dataAfter = getDataFile(filePathAfter);
+  const tree = bildTree(dataBefore, dataAfter);
+  return diff(tree, format);
 };
 
 export default genDiff;
