@@ -11,7 +11,6 @@ const mapping = {
 const iter = (tree, path) => {
   const res = tree.map((node) => {
     const { name, status } = node;
-    // console.log(node);
     const fullPath = path ? `${path}.${name}` : name;
     return mapping[status](fullPath, node, iter);
   });
