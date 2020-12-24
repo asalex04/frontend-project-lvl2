@@ -1,19 +1,18 @@
 const modify = (element) => (typeof element === 'object' ? '[complex value]' : element);
 
+const mapping = {
+  added: (fullPath, node) => `Property '${fullPath}' was added with value: '${modify(node.newValue)}'`,
+  removed: (fullPath) => `Property '${fullPath}' was removed`,
+  unchanged: () => '',
+  changed: (fullPath, node) => `Property '${fullPath}' was updated. From '${modify(node.oldValue)}' to '${modify(node.newValue)}'`,
+  hasChildren: (fullPath, node, iter) => `${iter(node.currentChildren, fullPath)}`,
+};
+
 const iter = (tree, path) => {
   const res = tree.map((node) => {
-    const {
-      name, oldValue, newValue, status, currentChildren,
-    } = node;
+    const { name, status } = node;
     const fullPath = path ? `${path}.${name}` : name;
-    const lines = {
-      added: () => `Property '${fullPath}' was added with value: '${modify(newValue)}'`,
-      removed: () => `Property '${fullPath}' was removed`,
-      unchanged: () => '',
-      changed: () => `Property '${fullPath}' was updated. From '${modify(oldValue)}' to '${modify(newValue)}'`,
-      hasChildren: () => `${iter(currentChildren, fullPath)}`,
-    };
-    return lines[status]();
+    return mapping[status](fullPath, node, iter);
   });
   return res.filter((item) => item !== '').join('\n');
 };
