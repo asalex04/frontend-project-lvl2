@@ -17,14 +17,14 @@ const iter = (tree, depth) => {
     const {
       name, oldValue, newValue, status, currentChildren,
     } = node;
-    const lines = {
+    const mapping = {
       added: () => `${gap}${getTab(depth)}+ ${name}: ${modify(newValue, depth)}`,
       removed: () => `${gap}${getTab(depth)}- ${name}: ${modify(oldValue, depth)}`,
       unchanged: () => `${gap}${getTab(depth + 2)}${name}: ${modify(oldValue, depth)}`,
-      changed: () => `${lines.added()}\n${lines.removed()}`,
+      changed: () => `${mapping.added()}\n${mapping.removed()}`,
       hasChildren: () => `${gap}${getTab(depth + 2)}${name}: ${iter(currentChildren, depth + 2)}`,
     };
-    return lines[status]();
+    return mapping[status]();
   });
   return ['{', ...res, `${getTab(depth)}}`].join('\n');
 };
