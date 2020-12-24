@@ -5,22 +5,22 @@ import { fileURLToPath } from 'url';
 import { test, expect } from '@jest/globals';
 import genDiff from '../src/index.js';
 
-const fileName = fileURLToPath(import.meta.url);
-const dirName = dirname(fileName);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-const getFilePath = (filename) => path
-  .join(dirName, '..', '__tests__', '__fixtures__', filename);
+const getFixturePath = (filename) => path
+  .join(__dirname, '..', '__tests__', '__fixtures__', filename);
 
-const readFile = (filename) => fs.readFileSync(getFilePath(filename), 'utf-8');
+const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
 const getName = (resultFormat) => _.upperFirst(resultFormat);
 const instances = [['json', 'stylish'], ['yml', 'plain'], ['yml', 'json']];
 
 test.each(instances)(
   'gendiff',
   (ext, resultFormat) => {
-    const pathBefore = getFilePath(`before.${ext}`);
-    const pathAfter = getFilePath(`after.${ext}`);
-    const getExpectResult = readFile(`result${getName(resultFormat)}.txt`);
-    expect(genDiff(pathBefore, pathAfter, `${resultFormat}`)).toEqual(getExpectResult);
+    const pathBefore = getFixturePath(`before.${ext}`);
+    const pathAfter = getFixturePath(`after.${ext}`);
+    const expectedResult = readFile(`result${getName(resultFormat)}.txt`);
+    expect(genDiff(pathBefore, pathAfter, `${resultFormat}`)).toEqual(expectedResult);
   },
 );
