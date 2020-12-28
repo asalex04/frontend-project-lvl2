@@ -6,13 +6,13 @@ const modify = (element, depth) => {
   if (!_.isObject(element)) {
     return element;
   }
-  const pair = Object.entries(element);
-  const res = pair.map(([key, value]) => `${getTab(depth + 2)}${key}: ${value}`);
-  return ['{', ...res, `${getTab(depth)}}`].join('\n');
+  const entries = Object.entries(element);
+  const result = entries.map(([key, value]) => `${getTab(depth + 2)}${key}: ${value}`);
+  return ['{', ...result, `${getTab(depth)}}`].join('\n');
 };
 
 const iter = (tree, depth) => {
-  const res = tree.map((node) => {
+  const output = tree.map((node) => {
     const { name, status } = node;
     const mapping = {
       added: () => `${getTab(depth)}+ ${name}: ${modify(node.newValue, depth + 1)}`,
@@ -23,7 +23,7 @@ const iter = (tree, depth) => {
     };
     return mapping[status]();
   });
-  return ['{', ...res, `${getTab(depth - 1)}}`].join('\n');
+  return ['{', ...output, `${getTab(depth - 1)}}`].join('\n');
 };
 
 export default (tree) => iter(tree, 1);

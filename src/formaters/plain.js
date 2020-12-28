@@ -1,10 +1,17 @@
-const modify = (element) => (typeof element === 'object' ? '[complex value]' : element);
+import _ from 'lodash';
+
+const modify = (element) => {
+  if (_.isObject(element)) {
+    return `'[complex value]'`;
+  }
+  return _.isString(element) ? `'${element}'` : element;
+};
 
 const mapping = {
-  added: (fullPath, node) => `Property '${fullPath}' was added with value: '${modify(node.newValue)}'`,
+  added: (fullPath, node) => `Property '${fullPath}' was added with value: ${modify(node.newValue)}`,
   removed: (fullPath) => `Property '${fullPath}' was removed`,
   unchanged: () => '',
-  changed: (fullPath, node) => `Property '${fullPath}' was updated. From '${modify(node.oldValue)}' to '${modify(node.newValue)}'`,
+  changed: (fullPath, node) => `Property '${fullPath}' was updated. From ${modify(node.oldValue)} to ${modify(node.newValue)}`,
   hasChildren: (fullPath, node, iter) => `${iter(node.currentChildren, fullPath)}`,
 };
 
