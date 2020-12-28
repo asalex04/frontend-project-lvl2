@@ -4,14 +4,14 @@ import _ from 'lodash';
 import parse from './parsers.js';
 import diff from './formaters/index.js';
 
-const getDataFile = (filepath) => {
+const getFileData = (filepath) => {
   const fullPath = path.resolve(process.cwd(), filepath);
   const data = fs.readFileSync(fullPath, 'utf-8');
-  const fileExtension = path.extname(filepath).slice(1);
-  return parse(data, fileExtension);
+  const dataFormat = path.extname(filepath).slice(1);
+  return parse(data, dataFormat);
 };
 
-const bildTree = (dataBefore, dataAfter) => {
+const buildTree = (dataBefore, dataAfter) => {
   const keys = _.union(Object.keys(dataBefore), Object.keys(dataAfter));
   const diffTree = _.sortBy(keys).map((key) => {
     if (!_.has(dataAfter, key)) {
@@ -32,7 +32,7 @@ const bildTree = (dataBefore, dataAfter) => {
       return {
         name: key,
         status: 'hasChildren',
-        currentChildren: bildTree(dataBefore[key], dataAfter[key]),
+        currentChildren: buildTree(dataBefore[key], dataAfter[key]),
       };
     }
     if (dataBefore[key] !== dataAfter[key]) {
@@ -53,9 +53,9 @@ const bildTree = (dataBefore, dataAfter) => {
 };
 
 const genDiff = (filePathBefore, filePathAfter, format = 'stylish') => {
-  const dataBefore = getDataFile(filePathBefore);
-  const dataAfter = getDataFile(filePathAfter);
-  const tree = bildTree(dataBefore, dataAfter);
+  const dataBefore = getFileData(filePathBefore);
+  const dataAfter = getFileData(filePathAfter);
+  const tree = buildTree(dataBefore, dataAfter);
   return diff(tree, format);
 };
 
