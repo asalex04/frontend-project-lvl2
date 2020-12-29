@@ -24,7 +24,7 @@ const buildTree = (dataBefore, dataAfter) => {
         currentChildren: buildTree(dataBefore[key], dataAfter[key]),
       };
     }
-    if (dataBefore[key] !== dataAfter[key]) {
+    if (!_.isEqual(dataBefore[key], dataAfter[key])) {
       return {
         name: key,
         status: 'changed',
