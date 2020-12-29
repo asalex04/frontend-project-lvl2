@@ -13,9 +13,13 @@ const getFixturePath = (filename) => path
 
 const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
 const getName = (resultFormat) => _.upperFirst(resultFormat);
-const instances = [['json', 'stylish'], ['yml', 'plain'], ['yml', 'json']];
+const inputFormats = ['json', 'yml'];
+const outputFormats = ['stylish', 'plain', 'json'];
+const getPairs = (input, ouput) => input
+  .flatMap((item1) => ouput
+    .map((item2) => ([item1, item2])));
 
-test.each(instances)(
+test.each(getPairs(inputFormats, outputFormats))(
   'gendiff',
   (ext, resultFormat) => {
     const pathBefore = getFixturePath(`before.${ext}`);
