@@ -29,10 +29,16 @@
     }
   - group2: {
         abc: 12345
-        deep: [object Object]
+        deep: {
+            id: 45
+        }
     }
   + group3: {
         fee: 100500
-        deep: [object Object]
+        deep: {
+            id: {
+                number: 45
+            }
+        }
     }
 }
