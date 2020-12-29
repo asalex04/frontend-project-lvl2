@@ -1,5 +1,4 @@
 import fs from 'fs';
-import _ from 'lodash';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { test, expect } from '@jest/globals';
