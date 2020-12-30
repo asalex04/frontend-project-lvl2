@@ -16,12 +16,12 @@ const mapping = {
 };
 
 const iter = (tree, path) => {
-  const res = tree.map((node) => {
+  const result = tree.map((node) => {
     const { name, status } = node;
     const fullPath = path ? `${path}.${name}` : name;
     return mapping[status](fullPath, node, iter);
   });
-  return res.filter((item) => item !== '').join('\n');
+  return result.filter((item) => item !== '').join('\n');
 };
 
 export default (tree) => iter(tree, '');

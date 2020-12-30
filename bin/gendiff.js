@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import fs from 'fs';
 import commander from 'commander';
 import genDiff from '../src/index.js';
 
@@ -9,6 +10,7 @@ const program = () => {
     .option('-f, --format <type>', 'output format [stylish]', 'stylish')
     .arguments('<filepath1> <filepath2>')
     .action((filepath1, filepath2) => {
+      // fs.writeFileSync('result', genDiff(filepath1, filepath2, commander.format));
       console.log(genDiff(filepath1, filepath2, commander.format));
     });
 
