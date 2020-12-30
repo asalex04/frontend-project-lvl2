@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 const modify = (element) => {
   if (_.isObject(element)) {
-    return `'[complex value]'`;
+    return `[complex value]`;
   }
   return _.isString(element) ? `'${element}'` : element;
 };
