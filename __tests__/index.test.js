@@ -7,15 +7,17 @@ import genDiff from '../src/index.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const getFixturePath = (filename) => path
-  .join(__dirname, '..', '__fixtures__', filename);
+const getFixturePath = (formats) => formats.map((ext) => [
+  path.resolve(__dirname, '..', `__fixtures__/before.${ext}`),
+  path.resolve(__dirname, '..', `__fixtures__/after.${ext}`),
+]);
 
-const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
 const inputFormats = ['json', 'yml'];
-const outputFormats = ['stylish', 'plain', 'json'];
-const getPairs = (input, ouput) => input
-  .flatMap((item1) => ouput
-    .map((item2) => ([item1, item2])));
+
+const readFile = (filename) => {
+  const pathResult = path.resolve(__dirname, '..', `__fixtures__/${filename}`);
+  return fs.readFileSync(pathResult, 'utf-8');
+};
 
 const expectedResult = {
   stylish: readFile(`resultStylish.txt`),
@@ -23,12 +25,11 @@ const expectedResult = {
   json: readFile(`resultJson.txt`),
 };
 
-test.each(getPairs(inputFormats, outputFormats))(
+test.each(getFixturePath(inputFormats))(
   'gendiff',
-  (ext, resultFormat) => {
-    const pathBefore = getFixturePath(`before.${ext}`);
-    const pathAfter = getFixturePath(`after.${ext}`);
-    expect(genDiff(pathBefore, pathAfter, `${resultFormat}`))
-      .toEqual(expectedResult[resultFormat]);
+  (pathBefore, pathAfter) => {
+    expect(genDiff(pathBefore, pathAfter, 'json')).toEqual(expectedResult['json']);
+    expect(genDiff(pathBefore, pathAfter, 'plain')).toEqual(expectedResult['plain']);
+    expect(genDiff(pathBefore, pathAfter, 'stylish')).toEqual(expectedResult['stylish']);
   },
 );
