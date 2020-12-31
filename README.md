@@ -2,6 +2,7 @@
 ![hexlet-check](https://github.com/asalex04/frontend-project-lvl2/workflows/hexlet-check/badge.svg)
 ![Node CI](https://github.com/asalex04/frontend-project-lvl2/workflows/Node%20CI/badge.svg)
 [![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/codeclimate/codeclimate/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/6b769cf4e9318ce635be/test_coverage)](https://codeclimate.com/github/asalex04/python-project-lvl1/test_coverage)
 
 ### About ptoject
 The second of four training projects of the Frontend JavaScript training program on the **Hexlet** online educational platform.
