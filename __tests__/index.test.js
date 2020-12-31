@@ -20,16 +20,16 @@ const readFile = (filename) => {
 };
 
 const expectedResult = {
-  stylish: readFile(`resultStylish.txt`),
-  plain: readFile(`resultPlain.txt`),
-  json: readFile(`resultJson.txt`),
+  stylish: readFile('resultStylish.txt'),
+  plain: readFile('resultPlain.txt'),
+  jsonFormat: readFile('resultJson.txt'),
 };
 
 test.each(getFixturePath(inputFormats))(
   'gendiff',
   (pathBefore, pathAfter) => {
-    expect(genDiff(pathBefore, pathAfter, 'json')).toEqual(expectedResult['json']);
-    expect(genDiff(pathBefore, pathAfter, 'plain')).toEqual(expectedResult['plain']);
-    expect(genDiff(pathBefore, pathAfter, 'stylish')).toEqual(expectedResult['stylish']);
+    expect(genDiff(pathBefore, pathAfter, 'json')).toEqual(expectedResult.jsonFormat);
+    expect(genDiff(pathBefore, pathAfter, 'plain')).toEqual(expectedResult.plain);
+    expect(genDiff(pathBefore, pathAfter, 'stylish')).toEqual(expectedResult.stylish);
   },
 );
