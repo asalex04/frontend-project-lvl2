@@ -10,11 +10,11 @@ const program = () => {
     .option('-f, --format <type>', 'output format [stylish]', 'stylish')
     .arguments('<filepath1> <filepath2>')
     .action((filepath1, filepath2) => {
-      // fs.writeFileSync('result', genDiff(filepath1, filepath2, commander.format));
+      // fs.writeFileSync('resultJson.txt', genDiff(filepath1, filepath2, commander.format));
       console.log(genDiff(filepath1, filepath2, commander.format));
     });
 
   commander.parse(process.argv);
 };
 
-export default program;
+program();
