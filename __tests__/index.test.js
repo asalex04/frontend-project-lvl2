@@ -7,17 +7,9 @@ import genDiff from '../src/index.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const getFixturePath = (formats) => formats.map((ext) => [
-  path.resolve(__dirname, '..', `__fixtures__/before.${ext}`),
-  path.resolve(__dirname, '..', `__fixtures__/after.${ext}`),
-]);
+const getFixturePath = (filename) => path.resolve(__dirname, '..', `__fixtures__/${filename}`);
 
-const inputFormats = ['json', 'yml'];
-
-const readFile = (filename) => {
-  const pathResult = path.resolve(__dirname, '..', `__fixtures__/${filename}`);
-  return fs.readFileSync(pathResult, 'utf-8');
-};
+const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
 
 const expectedResult = {
   stylish: readFile('resultStylish.txt'),
@@ -25,7 +17,10 @@ const expectedResult = {
   jsonFormat: readFile('resultJson.txt'),
 };
 
-test.each(getFixturePath(inputFormats))(
+test.each(['json', 'yml'].map((ext) => [
+  getFixturePath(`/before.${ext}`),
+  getFixturePath(`/after.${ext}`),
+]))(
   'gendiff',
   (pathBefore, pathAfter) => {
     expect(genDiff(pathBefore, pathAfter, 'json')).toEqual(expectedResult.jsonFormat);
