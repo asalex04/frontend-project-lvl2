@@ -17,14 +17,10 @@ const expectedResult = {
   jsonFormat: readFixture('resultJson.txt'),
 };
 
-test.each(['json', 'yml'].map((ext) => [
-  getFixturePath(`/before.${ext}`),
-  getFixturePath(`/after.${ext}`),
-]))(
-  'gendiff',
-  (pathBefore, pathAfter) => {
-    expect(genDiff(pathBefore, pathAfter, 'json')).toEqual(expectedResult.jsonFormat);
-    expect(genDiff(pathBefore, pathAfter, 'plain')).toEqual(expectedResult.plain);
-    expect(genDiff(pathBefore, pathAfter, 'stylish')).toEqual(expectedResult.stylish);
-  },
-);
+test.each(['json', 'yml'])('gendiff', (ext) => {
+  const pathBefore = getFixturePath(`/before.${ext}`);
+  const pathAfter = getFixturePath(`/after.${ext}`);
+  expect(genDiff(pathBefore, pathAfter, 'json')).toEqual(expectedResult.jsonFormat);
+  expect(genDiff(pathBefore, pathAfter, 'plain')).toEqual(expectedResult.plain);
+  expect(genDiff(pathBefore, pathAfter, 'stylish')).toEqual(expectedResult.stylish);
+});
