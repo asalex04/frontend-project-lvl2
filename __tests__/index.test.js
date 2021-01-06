@@ -9,12 +9,12 @@ const __dirname = dirname(__filename);
 
 const getFixturePath = (filename) => path.resolve(__dirname, '..', `__fixtures__/${filename}`);
 
-const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
+const readFixture = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
 
 const expectedResult = {
-  stylish: readFile('resultStylish.txt'),
-  plain: readFile('resultPlain.txt'),
-  jsonFormat: readFile('resultJson.txt'),
+  stylish: readFixture('resultStylish.txt'),
+  plain: readFixture('resultPlain.txt'),
+  jsonFormat: readFixture('resultJson.txt'),
 };
 
 test.each(['json', 'yml'].map((ext) => [
