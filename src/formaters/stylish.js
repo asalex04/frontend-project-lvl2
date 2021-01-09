@@ -1,7 +1,8 @@
 import _ from 'lodash';
 
 const indent = ' ';
-const getTab = (depth, offset = 0) => indent.repeat(4 * depth - offset);
+const tabStep = 4;
+const getTab = (depth, offset = 0) => indent.repeat(tabStep * depth - offset);
 
 const render = (formatValue, depth) => {
   if (!_.isObject(formatValue)) {
@@ -9,7 +10,7 @@ const render = (formatValue, depth) => {
   }
   const result = _.entries(formatValue)
     .map(([key, value]) => `${getTab(depth)}${key}: ${render(value, depth + 1)}`);
-  const output = ['{', ...result, `${getTab(depth - 1)}}`].join('\n');
+  const output = ['{', ...result, `${getTab(depth, tabStep)}}`].join('\n');
   return output;
 };
 
@@ -25,7 +26,7 @@ const iter = (tree, depth) => {
     };
     return mapping[status]();
   });
-  return ['{', ...output, `${getTab(depth - 1)}}`].join('\n');
+  return ['{', ...output, `${getTab(depth, tabStep)}}`].join('\n');
 };
 
 export default (tree) => iter(tree, 1);
